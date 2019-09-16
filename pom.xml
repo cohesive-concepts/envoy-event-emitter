@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.cohesive.envoy</groupId>
-  <artifactId>monitor-event-emitter</artifactId>
+  <groupId>com.github.cohesive-concepts</groupId>
+  <artifactId>envoy-event-emitter</artifactId>
   <version>0.0.1</version>
   <packaging>jar</packaging>
 
-  <name>monitor-event-emitter</name>
-  <url>https://github.com/cohesive-concepts/monitor-event-emitter</url>
+  <name>envoy-event-emitter</name>
+  <url>https://github.com/cohesive-concepts/envoy-event-emitter</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
