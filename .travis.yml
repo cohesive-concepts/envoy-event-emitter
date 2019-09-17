@@ -1,1 +1,13 @@
 language: java
+
+before_deploy:
+  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  
+deploy:
+  provider: releases
+  api_key:
+    secure: J4HbiOscYd9BRThN7GNZvUq9nlIE1TtAXeyw3Qe5YjkP9k+fofdqJ8UKKzLq4t7pMyqhsA0EoQWQCkvcTMdKgY6KxunRRHJv6vQKL8eTN6eLtF6/f56QGJ6+AaNHdJkIKH82r3mP3xDlqsjUkAyg8XAVAok9taNpMXNzCZWzqIy1N/pz8xxG+k2FAJwFRmmkRMDKbwB6UAuTMYxhdtNKtjdux5uD6lbECumKU7PgWfveFC67H4gT5+VP8vxjwnYjSKXqhnOrmC//jEoogYv/Ss+DPlM56Iq8KrsKUH8+zGrXfKf7INfiIGSAHp8GJvDaJ4EsaLwE6tOPy02/SgNR5JLiya1ppG4bfDuBmvrpN+APrncAkdkQ6LvFc2LwQeJuko6tO3mR4mv6Geg4RTQaRUHFJIrx7KoFpDUUYdpJgDKG13naXxWkx+FG18ShepYRkC1bPeOiHp6Hx+NjbNZ2lH5/5zXmFUQEn3SeiTzddEVlkx8ab+KivBawW3oPZF71R5uVF7hUxxtSca7W6NUT384tPQKfauResXJ4F21wIBlCfhNOzZ9UFXXk0CBF2wh4iIeTCn03s8tY5UTvHI56mYOQDKwCGHOQIM1KGsRXSjLN3f++u7xjwOcufVRUIPQdVgZhObxnPhbRWV2Zlpr63VMMSyjQNVU/HGUGXhywqsU=
+  file: target/envoy-event-emitter-$project_version.jar
+  on:
+    repo: cohesive-concepts/envoy-event-emitter
