@@ -1,15 +1,13 @@
 language: java
-
 before_deploy:
-  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  
+- mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep
+  -v '\[')
 deploy:
   provider: releases
   api_key:
-    secure: J4HbiOscYd9BRThN7GNZvUq9nlIE1TtAXeyw3Qe5YjkP9k+fofdqJ8UKKzLq4t7pMyqhsA0EoQWQCkvcTMdKgY6KxunRRHJv6vQKL8eTN6eLtF6/f56QGJ6+AaNHdJkIKH82r3mP3xDlqsjUkAyg8XAVAok9taNpMXNzCZWzqIy1N/pz8xxG+k2FAJwFRmmkRMDKbwB6UAuTMYxhdtNKtjdux5uD6lbECumKU7PgWfveFC67H4gT5+VP8vxjwnYjSKXqhnOrmC//jEoogYv/Ss+DPlM56Iq8KrsKUH8+zGrXfKf7INfiIGSAHp8GJvDaJ4EsaLwE6tOPy02/SgNR5JLiya1ppG4bfDuBmvrpN+APrncAkdkQ6LvFc2LwQeJuko6tO3mR4mv6Geg4RTQaRUHFJIrx7KoFpDUUYdpJgDKG13naXxWkx+FG18ShepYRkC1bPeOiHp6Hx+NjbNZ2lH5/5zXmFUQEn3SeiTzddEVlkx8ab+KivBawW3oPZF71R5uVF7hUxxtSca7W6NUT384tPQKfauResXJ4F21wIBlCfhNOzZ9UFXXk0CBF2wh4iIeTCn03s8tY5UTvHI56mYOQDKwCGHOQIM1KGsRXSjLN3f++u7xjwOcufVRUIPQdVgZhObxnPhbRWV2Zlpr63VMMSyjQNVU/HGUGXhywqsU=
-  file: target/envoy-event-emitter-$project_version.jar
+    secure: nJ5Hmk775lx2kFU9mgDhFICbe5DT3+ZGByynQB78dhwD0PyDGQuJJwokmoscKB2RpNwT2QHszUuQrHMo4oto8V9/eL8U8S5UGjQXUhMbm3pQb9ZX15UYBfyH3zEz2agf9hwc5GNBVfTOuPv1BLtqdTTI71JA+JrWZo7aeMQoYVJBjTYpZFynOXm8AcDWUldN5DqWsalBdn3BU1QcHXLxylv+8noWrZAvsFenTfuU8doMJsXlqVsAT4FMeNu0I+vyctsZR3XMMDRJ2qWs/8rqULVOh+e4FOPVIklZ/GhZCO2iZRe5e8Rna2TKyeFVjMuYJsfAlZIGtCRfjoz0d3raeGYUHwLKATZblB/jPszZBrnlYgnWqKuXZfUrIsUfgnlTHjLDRLJQbHXhbXOfl2wFaMdF6veUzi4z+W/GJh7eIbjPk93IZOnYo9pjgW1d8b2VzrR8z44iTzA26e97b7evBX1/JRO1UeEhdSHGMciOQ6pyKrP+jw77TmOVNxA85gFwhbR92Bw6ixojYuBC+o7aaNFh7xNH0YNU5kHLVym73qT6ckGS4tgdZ4tdilh3ZJPBXt2X/LP3nmB3OW3P25vNxgQmJW9WCtDzU7nU48IaAEGVG5VL9zJx32JFPoRIxXtoeDr50YOcsbmDJMCDE2KPq4o7YAaSR/HgTvYWWYyRy2g=
+  file: target/envoy-event-emitter-$project.version.jar
   on:
     repo: cohesive-concepts/envoy-event-emitter
-  name: $project_version
-  skip_cleanup: true
+  skip_cleanup: true    
