@@ -11,3 +11,5 @@ deploy:
   file: target/envoy-event-emitter-$project_version.jar
   on:
     repo: cohesive-concepts/envoy-event-emitter
+  name: $project_version
+  skip_cleanup: true

@@ -5,10 +5,13 @@
 
 	<groupId>com.github.cohesive-concepts</groupId>
 	<artifactId>envoy-event-emitter</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>envoy-event-emitter</name>
+	<description>
+		Abstraction for eventing services.
+	</description>
 	<url>https://github.com/cohesive-concepts/envoy-event-emitter</url>
 
 	<licenses>
@@ -84,9 +87,9 @@
 						<version>1.6.8</version>
 						<extensions>true</extensions>
 						<configuration>
-							<serverid>ossrh</serverid>
-							<nexusurl>https://oss.sonatype.org/</nexusurl>
-							<autoreleaseafterclose>true</autoreleaseafterclose>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
 					</plugin>
 					<!-- To generate javadoc -->
