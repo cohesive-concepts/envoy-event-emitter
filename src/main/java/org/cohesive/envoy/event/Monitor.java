@@ -13,15 +13,21 @@ import java.util.logging.Logger;
  * @author dharrington
  *
  */
+@SuppressWarnings("hiding")
 public abstract class Monitor {
 	
 	protected static final Logger LOGGER = Logger.getLogger(Monitor.class.getName());
+	
+	private Long interval;
+	
+	private Long delay;
 	
 	/**
 	 * Public constructor that
 	 * schedules the event monitor.
 	 */
 	public Monitor() {
+		init();
 		schedule();
 	}
 	
@@ -41,10 +47,7 @@ public abstract class Monitor {
 	        }
 	    };
 	    Timer timer = new Timer("Timer-" + this.getClass().getSimpleName());
-	     
-	    long delay  = 5000L;
-	    long period = 30000L;
-	    timer.scheduleAtFixedRate(repeatedTask, delay, period);
+	    timer.scheduleAtFixedRate(repeatedTask, delay, interval);
 	}
 	
 	/**
@@ -53,5 +56,10 @@ public abstract class Monitor {
 	 * @return
 	 */
 	public abstract MonitorEvent performCheck();
+	
+	private void init() {
+		this.delay = Long.parseLong(System.getenv("ENV_EVENT_CHECK_DELAY"));
+		this.interval = Long.parseLong(System.getenv("ENV_EVENT_CHECK_INTERVAL"));
+	}
 	
 }

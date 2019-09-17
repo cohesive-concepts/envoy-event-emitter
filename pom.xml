@@ -5,7 +5,7 @@
 
 	<groupId>com.github.cohesive-concepts</groupId>
 	<artifactId>envoy-event-emitter</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>envoy-event-emitter</name>
