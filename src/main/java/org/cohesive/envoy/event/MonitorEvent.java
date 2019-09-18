@@ -16,6 +16,7 @@ public class MonitorEvent {
 	private Long timestamp;
 	private String message;
 	private String priority;
+	private Boolean send = false; 
 	
 	public MonitorEvent applicationId(String applicationId) {
 		this.applicationId = applicationId;
@@ -42,6 +43,11 @@ public class MonitorEvent {
 		return this;
 	}
 	
+	public MonitorEvent send(Boolean send) {
+		this.send = send;
+		return this;
+	}
+	
 	public String getApplicationId() {
 		return this.applicationId;
 	}
@@ -60,5 +66,13 @@ public class MonitorEvent {
 	
 	public Long getTimestamp() {
 		return this.timestamp;
+	}
+
+	public Boolean getSend() {
+		return send;
+	}
+
+	public void setSend(Boolean send) {
+		this.send = send;
 	}
 }

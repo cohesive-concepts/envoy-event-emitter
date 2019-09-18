@@ -13,37 +13,27 @@ import java.util.logging.Logger;
  * @author dharrington
  *
  */
-@SuppressWarnings("hiding")
 public abstract class Monitor {
 	
 	protected static final Logger LOGGER = Logger.getLogger(Monitor.class.getName());
-	
-	private Long interval;
-	
-	private Long delay;
-	
-	/**
-	 * Public constructor that
-	 * schedules the event monitor.
-	 */
-	public Monitor() {
-		init();
-		schedule();
-	}
 	
 	public static final MonitorEventEmitter emitter = MonitorEventEmitterFactory.getEmitter();
 	
 	/**
 	 * This creates a TimerTask/Timer that will execute a method
-	 * in the Monitor at a given interval.
+	 * in the Monitor at a given interval and start delay.
+	 * @param delay The start delay
+	 * @param interval How often to execute performCheck()
 	 */
-	public void schedule(){
+	public void schedule(Long delay, Long interval){
 	    TimerTask repeatedTask = new TimerTask() {
 	        @Override
 			public void run() {
 	    		LOGGER.log(Level.FINE, "Task performed on " + new Date());
 	        	MonitorEvent event = performCheck();
-	        	emitter.emit(event);
+	        	if (event.getSend()) {
+	        		emitter.emit(event);
+	        	}
 	        }
 	    };
 	    Timer timer = new Timer("Timer-" + this.getClass().getSimpleName());
@@ -53,13 +43,8 @@ public abstract class Monitor {
 	/**
 	 * This must be implemented to perform the check and return
 	 * an event containing the results of the check.
-	 * @return
+	 * @return The results of the check as a monitor event
 	 */
 	public abstract MonitorEvent performCheck();
-	
-	private void init() {
-		this.delay = Long.parseLong(System.getenv("ENV_EVENT_CHECK_DELAY"));
-		this.interval = Long.parseLong(System.getenv("ENV_EVENT_CHECK_INTERVAL"));
-	}
 	
 }
