@@ -3,6 +3,7 @@ package org.cohesive.envoy.event;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,8 @@ import java.util.logging.Logger;
  */
 public abstract class Monitor {
 	
+	protected ScheduledExecutorService executorService;
+	
 	protected static final Logger LOGGER = Logger.getLogger(Monitor.class.getName());
 	
 	public static final MonitorEventEmitter emitter = MonitorEventEmitterFactory.getEmitter();
@@ -26,8 +29,9 @@ public abstract class Monitor {
 	 * @param delay The start delay
 	 * @param interval How often to execute performCheck()
 	 */
-	public void schedule(Long delay, Long interval){
-		schedule(delay, interval, Executors.newScheduledThreadPool(1));
+	public ScheduledFuture<?> schedule(Long delay, Long interval){
+		executorService =  Executors.newScheduledThreadPool(1);
+		return schedule(delay, interval, executorService);
 	}
 
 	/**
@@ -37,8 +41,9 @@ public abstract class Monitor {
 	 * @param interval How often to execute performCheck()
 	 * @param the executor service to use
 	 */
-	public void schedule(Long delay, Long interval, ScheduledExecutorService executorService) {
-	    executorService.scheduleAtFixedRate( new Runnable() {
+	public ScheduledFuture<?> schedule(Long delay, Long interval, ScheduledExecutorService service) {
+		this.executorService = service;
+	    return executorService.scheduleAtFixedRate( new Runnable() {
 	        @Override
 			public void run() {
 	    		LOGGER.log(Level.FINE, "Task performed on " + new Date());
