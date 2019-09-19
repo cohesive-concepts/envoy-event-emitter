@@ -1,8 +1,10 @@
 package org.cohesive.envoy.event;
 
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -15,18 +17,33 @@ import java.util.logging.Logger;
  */
 public abstract class Monitor {
 	
+	protected ScheduledExecutorService executorService;
+	
 	protected static final Logger LOGGER = Logger.getLogger(Monitor.class.getName());
 	
 	public static final MonitorEventEmitter emitter = MonitorEventEmitterFactory.getEmitter();
 	
 	/**
-	 * This creates a TimerTask/Timer that will execute a method
+	 * This creates a scheduler thread that will execute a method
 	 * in the Monitor at a given interval and start delay.
 	 * @param delay The start delay
 	 * @param interval How often to execute performCheck()
 	 */
-	public void schedule(Long delay, Long interval){
-	    TimerTask repeatedTask = new TimerTask() {
+	public ScheduledFuture<?> schedule(Long delay, Long interval){
+		executorService =  Executors.newScheduledThreadPool(1);
+		return schedule(delay, interval, executorService);
+	}
+
+	/**
+	 * This creates a scheduler thread that will execute a method
+	 * in the Monitor at a given interval and start delay.
+	 * @param delay The start delay
+	 * @param interval How often to execute performCheck()
+	 * @param the executor service to use
+	 */
+	public ScheduledFuture<?> schedule(Long delay, Long interval, ScheduledExecutorService service) {
+		this.executorService = service;
+	    return executorService.scheduleAtFixedRate( new Runnable() {
 	        @Override
 			public void run() {
 	    		LOGGER.log(Level.FINE, "Task performed on " + new Date());
@@ -35,11 +52,9 @@ public abstract class Monitor {
 	        		emitter.emit(event);
 	        	}
 	        }
-	    };
-	    Timer timer = new Timer("Timer-" + this.getClass().getSimpleName());
-	    timer.scheduleAtFixedRate(repeatedTask, delay, interval);
+	    }, delay, interval, TimeUnit.MILLISECONDS);
 	}
-	
+
 	/**
 	 * This must be implemented to perform the check and return
 	 * an event containing the results of the check.
