@@ -1,9 +1,7 @@
 package org.cohesive.envoy.event;
 
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -23,26 +21,22 @@ public abstract class Monitor {
 	public static final MonitorEventEmitter emitter = MonitorEventEmitterFactory.getEmitter();
 	
 	/**
-	 * This creates a TimerTask/Timer that will execute a method
+	 * This creates a scheduler thread that will execute a method
 	 * in the Monitor at a given interval and start delay.
 	 * @param delay The start delay
 	 * @param interval How often to execute performCheck()
 	 */
 	public void schedule(Long delay, Long interval){
-	    TimerTask repeatedTask = new TimerTask() {
-	        @Override
-			public void run() {
-	    		LOGGER.log(Level.FINE, "Task performed on " + new Date());
-	        	MonitorEvent event = performCheck();
-	        	if (event.getSend()) {
-	        		emitter.emit(event);
-	        	}
-	        }
-	    };
-	    Timer timer = new Timer("Timer-" + this.getClass().getSimpleName());
-	    timer.scheduleAtFixedRate(repeatedTask, delay, interval);
+		schedule(delay, interval, Executors.newScheduledThreadPool(1));
 	}
-	
+
+	/**
+	 * This creates a scheduler thread that will execute a method
+	 * in the Monitor at a given interval and start delay.
+	 * @param delay The start delay
+	 * @param interval How often to execute performCheck()
+	 * @param the executor service to use
+	 */
 	public void schedule(Long delay, Long interval, ScheduledExecutorService executorService) {
 	    executorService.scheduleAtFixedRate( new Runnable() {
 	        @Override
