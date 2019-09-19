@@ -3,6 +3,9 @@ package org.cohesive.envoy.event;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -40,6 +43,19 @@ public abstract class Monitor {
 	    timer.scheduleAtFixedRate(repeatedTask, delay, interval);
 	}
 	
+	public void schedule(Long delay, Long interval, ScheduledExecutorService executorService) {
+	    executorService.scheduleAtFixedRate( new Runnable() {
+	        @Override
+			public void run() {
+	    		LOGGER.log(Level.FINE, "Task performed on " + new Date());
+	        	MonitorEvent event = performCheck();
+	        	if (event.getSend()) {
+	        		emitter.emit(event);
+	        	}
+	        }
+	    }, delay, interval, TimeUnit.MILLISECONDS);
+	}
+
 	/**
 	 * This must be implemented to perform the check and return
 	 * an event containing the results of the check.
